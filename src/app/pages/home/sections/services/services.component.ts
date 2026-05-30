@@ -7,7 +7,7 @@ import { AnimateOnScrollDirective } from '../../../../shared/directives/animate-
 interface ServiceItem {
   title: string;
   description: string;
-  iconSvg: string;
+  icon: string; // identificador do ícone
 }
 
 @Component({
@@ -28,12 +28,46 @@ interface ServiceItem {
 
         <!-- Grid de Serviços -->
         <div class="services-grid">
-          <div 
-            class="service-card" 
+          <div
+            class="service-card"
             *ngFor="let service of services; let idx = index"
             appAnimateOnScroll
             [delay]="(idx * 100) + 'ms'">
-            <div class="card-icon" [innerHTML]="service.iconSvg"></div>
+
+            <div class="card-icon">
+              <!-- Software Sob Medida: code-2 -->
+              <svg *ngIf="service.icon === 'code'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m18 16 4-4-4-4"/>
+                <path d="m6 8-4 4 4 4"/>
+                <path d="m14.5 4-5 16"/>
+              </svg>
+              <!-- Sites de Alta Performance: zap -->
+              <svg *ngIf="service.icon === 'rocket'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>
+              </svg>
+              <!-- Automação de Processos: settings (gear) -->
+              <svg *ngIf="service.icon === 'bot'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+              <!-- Integrações de Sistemas: git-merge -->
+              <svg *ngIf="service.icon === 'plug'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="18" cy="18" r="3"/>
+                <circle cx="6" cy="6" r="3"/>
+                <path d="M6 21V9a9 9 0 0 0 9 9"/>
+              </svg>
+              <!-- Dashboards e Relatórios: bar-chart-2 -->
+              <svg *ngIf="service.icon === 'chart'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="20" x2="18" y2="10"/>
+                <line x1="12" y1="20" x2="12" y2="4"/>
+                <line x1="6" y1="20" x2="6" y2="14"/>
+              </svg>
+              <!-- Suporte Técnico Ágil: headphones -->
+              <svg *ngIf="service.icon === 'headset'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3"/>
+              </svg>
+            </div>
+
             <h3 class="card-title">{{ service.title }}</h3>
             <p class="card-desc">{{ service.description }}</p>
           </div>
@@ -115,7 +149,7 @@ interface ServiceItem {
       border: 1px solid $color-icon-border;
       @include transition-smooth;
 
-      ::ng-deep svg {
+      svg {
         width: 24px;
         height: 24px;
       }
@@ -142,64 +176,32 @@ export class ServicesComponent {
     {
       title: 'Software Sob Medida',
       description: 'Sistemas web robustos construídos sob medida para a sua operação. Do desenho da arquitetura à entrega final de APIs e painéis seguros.',
-      iconSvg: `
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="16 18 22 12 16 6"></polyline>
-          <polyline points="8 6 2 12 8 18"></polyline>
-          <line x1="14" y1="4" x2="10" y2="20"></line>
-        </svg>
-      `
+      icon: 'code'
     },
     {
       title: 'Sites de Alta Performance',
       description: 'Lançamos sites rápidos estruturados para SEO técnico que convertem visitantes em clientes e carregam em milissegundos no celular.',
-      iconSvg: `
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M4.5 16.5c-1.5 1.26-2.5 3.19-2.5 5.5h20c0-2.31-1-4.24-2.5-5.5"></path>
-          <path d="M12 2C7.58 2 4 5.58 4 10c0 4.25 4.3 7.8 7.37 10.33a1 1 0 0 0 1.26 0C15.7 17.8 20 14.25 20 10c0-4.42-3.58-8-8-8z"></path>
-          <circle cx="12" cy="10" r="3"></circle>
-        </svg>
-      `
+      icon: 'rocket'
     },
     {
       title: 'Automação de Processos',
       description: 'Elimine tarefas repetitivas, digitação manual e planilhas confusas com robôs de RPA e integrações de rotina automáticas.',
-      iconSvg: `
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="3"></circle>
-          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-        </svg>
-      `
+      icon: 'bot'
     },
     {
       title: 'Integrações de Sistemas',
       description: 'Conectamos seus sistemas de faturamento, CRM, gateways de pagamento e a API do WhatsApp Business para centralizar e agilizar a informação.',
-      iconSvg: `
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-        </svg>
-      `
+      icon: 'plug'
     },
     {
       title: 'Dashboards e Relatórios',
       description: 'Centralize dados contábeis, logs operacionais e históricos financeiros em painéis de BI interativos atualizados em tempo real.',
-      iconSvg: `
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="18" y1="20" x2="18" y2="10"></line>
-          <line x1="12" y1="20" x2="12" y2="4"></line>
-          <line x1="6" y1="20" x2="6" y2="14"></line>
-        </svg>
-      `
+      icon: 'chart'
     },
     {
       title: 'Suporte Técnico Ágil',
       description: 'Time de desenvolvedores focado em resolver problemas rapidamente, prestando suporte preventivo contínuo de forma parceira.',
-      iconSvg: `
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-        </svg>
-      `
+      icon: 'headset'
     }
   ];
 }

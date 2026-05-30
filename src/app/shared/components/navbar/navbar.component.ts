@@ -165,31 +165,37 @@ import { BtnPrimaryComponent } from '../btn-primary/btn-primary.component';
       color: $color-text-more-muted;
       @include transition-smooth;
       position: relative;
-      padding: 0.25rem 0;
+      padding: 0.35rem 1rem;
+      border-radius: 6px;
 
       &::after {
         content: '';
         position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 0;
+        bottom: 4px;
+        left: 50%;
+        right: 50%;
         height: 2px;
         background-color: $color-primary;
+        border-radius: 1px;
         @include transition-smooth;
       }
 
       &:hover {
         color: $color-primary;
+        background-color: rgba($color-primary, 0.06);
         &::after {
-          width: 100%;
+          left: 1rem;
+          right: 1rem;
         }
       }
 
       &.active {
         color: $color-primary;
         font-weight: 600;
+        background-color: rgba($color-primary, 0.06);
         &::after {
-          width: 100%;
+          left: 1rem;
+          right: 1rem;
         }
       }
     }
@@ -232,10 +238,10 @@ import { BtnPrimaryComponent } from '../btn-primary/btn-primary.component';
       @include transition-smooth;
 
       &:hover {
-        background-color: var(--color-ghost-hover-bg);
+        background-color: $color-primary;
         border-color: $color-primary;
-        color: $color-primary;
-        transform: scale(1.05);
+        color: #fff;
+        transform: rotate(15deg);
       }
 
       .theme-icon {
@@ -376,7 +382,6 @@ export class NavbarComponent implements OnInit {
   public isDarkMode = signal<boolean>(false);
   private readonly isBrowser: boolean;
   private lastScrollY = 0;
-  private readonly scrollThreshold = 15;
 
   constructor(
     private readonly router: Router,
@@ -438,9 +443,9 @@ export class NavbarComponent implements OnInit {
 
   private checkScroll(): void {
     const currentScrollY = window.scrollY;
-    
-    // Determina se passou do topo
-    this.isScrolled = currentScrollY > 15;
+
+    // Classe scrolled: passa de 20px (igual ao BRAZMAX)
+    this.isScrolled = currentScrollY > 20;
 
     // Se o menu mobile estiver aberto, não esconde a navbar
     if (this.isMenuOpen) {
@@ -448,25 +453,16 @@ export class NavbarComponent implements OnInit {
       return;
     }
 
-    const diff = currentScrollY - this.lastScrollY;
-
-    // Apenas atualiza a visibilidade se o scroll acumulado passar do threshold
-    if (Math.abs(diff) > this.scrollThreshold) {
-      if (diff > 0 && currentScrollY > 100) {
-        // Rolando para baixo -> Esconde
-        this.isHidden = true;
-      } else if (diff < 0) {
-        // Rolando para cima -> Mostra
-        this.isHidden = false;
-      }
-      this.lastScrollY = currentScrollY;
-    }
-
-    // Garante que mostre no topo absoluto
-    if (currentScrollY <= 15) {
+    // Lógica idêntica ao BRAZMAX:
+    // Rolando para baixo E já passou dos 100px → esconde
+    // Qualquer scroll para cima → mostra imediatamente (sem threshold)
+    if (currentScrollY > this.lastScrollY && currentScrollY > 100) {
+      this.isHidden = true;
+    } else {
       this.isHidden = false;
-      this.lastScrollY = currentScrollY;
     }
+
+    this.lastScrollY = currentScrollY;
   }
 
   public toggleMenu(): void {
